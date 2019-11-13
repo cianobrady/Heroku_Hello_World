@@ -32,6 +32,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import static javax.measure.unit.SI.KILOGRAM;
@@ -42,7 +43,8 @@ import org.jscience.physics.amount.Amount;
 @Controller
 @SpringBootApplication
 public class Main {
-
+  
+  private int[] a = new int[] {13, 22, 56, 83, 56, 48};
   @Value("${spring.datasource.url}")
   private String dbUrl;
 
@@ -58,13 +60,17 @@ public class Main {
     return "index";
   }
 
+  @RequestMapping("/reverse")
+  String reverse() {
+    ArrayOps ops = new ArrayOps();
+    a = ops.reverse(a);
+    return "redirect:/hello";
+  }
+
   @RequestMapping("/hello")
   String hello(Map<String, Object> model) {
     RelativisticModel.select();
-    int[] a = new int[] {13, 22, 56, 83, 56, 48};
-    ArrayOps ops = new ArrayOps();
-    int[] m = ops.reverse(a);
-    model.put("science", m.toString());
+    model.put("science", Arrays.toString(a));
     return "hello";
   }
 
